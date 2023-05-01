@@ -211,7 +211,7 @@ def main():
             print(f"    Accuracy {accuracy}\n", file=outfile)
 
         print(
-            f"#### C6 Summary For Optimizer {args.optimizer_name} ####\n\n",
+            f"#### Q1 Summary For Batch Size = {args.batch_size} ####\n\n",
             file=outfile,
         )
         table = PrettyTable([])
@@ -221,8 +221,6 @@ def main():
         table.add_column("Average Train Loss", average_train_losses[1])
         print(table, file=outfile)
         outfile.close()
-
-        
         return
         
 
