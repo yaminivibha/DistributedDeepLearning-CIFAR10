@@ -1,6 +1,7 @@
 #!/bin/bash
 
+# Q1
+python3 lab2.py LAB5 --batch_size 32 --outfile batchsize_32 .txt
+python3 lab2.py LAB5 --batch_size 128 --outfile batchsize_128 .txt
+python3 lab2.py LAB5 --batch_size 512 --outfile batchsize_512 .txt
 
-python3 lab2.py LAB5 --batch_size 32 --batchsize_32 .txt
-python3 lab2.py LAB5 --batch_size 128 --batchsize_128 .txt
-python3 lab2.py LAB5 --batch_size 512 --batchsize_512 .txt
