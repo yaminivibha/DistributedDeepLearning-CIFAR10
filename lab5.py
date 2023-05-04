@@ -47,7 +47,7 @@ def main():
         "--lr", default=0.1, type=float, help="learning rate, default 0.1"
     )
     parser.add_argument(
-        "--cuda", default=False, action="store_true", help="cuda usage; default False"
+        "--cuda", default=True, action="store_true", help="cuda usage; default True"
     )
     parser.add_argument("--batch_size", default=128, type=int, help="batch size; default 128")
     
