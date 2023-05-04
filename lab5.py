@@ -10,6 +10,7 @@ from prettytable import PrettyTable
 
 from models import *
 from utils import load_data, print_config, progress_bar, set_optimizer
+from torch.profiler import profile, record_function, ProfilerActivity
 
 EXERCISES = ["Q1"]
 
@@ -188,8 +189,8 @@ def main():
 
     #### LAB5 Q1 ####
     if args.exercise == "Q1":
-        print(f"======== LAB5 ========", file=outfile)
-        print_config(args)
+        print(f"======== LAB5 Q1 ========", file=outfile)
+        print_config(args, file=outfile)
 
         args.device = "cuda"
         print("==> Preparing data..")
@@ -232,6 +233,11 @@ def main():
         outfile.close()
         return
         
+    if args.exercise == "Q2":
+        print(f"======== LAB5 Q2 ========", file=outfile)
+        print_config(args, file=outfile)
+
+
 
 
 if __name__ == "__main__":
