@@ -190,7 +190,7 @@ def main():
     #### LAB5 Q1 ####
     if args.exercise == "Q1":
         print(f"======== LAB5 Q1 ========", file=outfile)
-        print_config(args, file=outfile)
+        print_config(args)
 
         args.device = "cuda"
         print("==> Preparing data..")
@@ -235,7 +235,7 @@ def main():
         
     if args.exercise == "Q2":
         print(f"======== LAB5 Q2 ========", file=outfile)
-        print_config(args, file=outfile)
+        print_config(args)
 
 
 
