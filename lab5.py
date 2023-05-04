@@ -221,12 +221,14 @@ def main():
             f"#### Q1 Summary For Batch Size = {args.batch_size} ####\n\n",
             file=outfile,
         )
-        table = PrettyTable([])
-        table.add_column("Epoch", [1,])
-        table.add_column("Training Time (secs)", train_times[1])
-        table.add_column("Accuracy", accuracies[1])
-        table.add_column("Average Train Loss", average_train_losses[1])
-        print(table, file=outfile)
+        print(f"Epoch 1:    Training Time (secs): {train_times[-1]}        Accuracy:{accuracies[-1]}     Average Train Loss:{average_train_losses[-1]} ", file=outfile)
+
+        # table = PrettyTable([])
+        # table.add_column("Epoch", [1,])
+        # table.add_column("Training Time (secs)", )
+        # table.add_column("Accuracy", )
+        # table.add_column("Average Train Loss",)
+        # print(table, file=outfile)
         outfile.close()
         return
         
