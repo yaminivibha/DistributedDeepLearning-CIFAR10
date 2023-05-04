@@ -50,7 +50,7 @@ def main():
         "--cuda", default=True, action="store_true", help="cuda usage; default True"
     )
     parser.add_argument("--batch_size", default=128, type=int, help="batch size; default 128")
-    
+    parser.add_argument("--gpus", default=1, type=int, help="num gpus; default 1")
     parser.add_argument(
         "--no_batch_norms",
         default=False,
@@ -81,7 +81,14 @@ def main():
         net = ResNet18()
     net = net.to(args.device)
     if args.device == "cuda":
-        net = torch.nn.DataParallel(net)
+        if(args.gpus == 1):
+            net = torch.nn.DataParallel(net)
+        elif(args.gpus == 2):
+            net == torch.nn.DataParallel(net, [0,1])
+        elif(args.gpus == 3):
+            net == torch.nn.DataParallel(net, [0,1,2])
+        elif(args.gpus == 4):
+            net == torch.nn.DataParallel(net, [0,1,2,3])
         cudnn.benchmark = True
 
     criterion = nn.CrossEntropyLoss()
