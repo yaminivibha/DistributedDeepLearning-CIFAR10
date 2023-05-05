@@ -275,7 +275,6 @@ def main():
             file=outfile,
         )
         print(f"Epoch 1:    Training Time (secs): {train_times[-1]}        Accuracy:{accuracies[-1]}     Average Train Loss:{average_train_losses[-1]} ", file=outfile)
-        print(f"Communication Time: {}")
         # table = PrettyTable([])
         # table.add_column("Epoch", [1,])
         # table.add_column("Training Time (secs)", )
