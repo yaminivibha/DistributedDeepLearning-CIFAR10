@@ -10,7 +10,6 @@ from prettytable import PrettyTable
 
 from models import *
 from utils import load_data, print_config, progress_bar, set_optimizer
-from torch.profiler import profile, record_function, ProfilerActivity
 
 EXERCISES = ["Q1"]
 
@@ -104,7 +103,10 @@ def main():
 
             epoch (int): the current epoch
         Returns:
+        {
             c2_load_time (float): the time spent loading data
+            ave_train_loss (float): the average training loss
+        }
         """
         print("\nEpoch: %d" % epoch)
         net.train()
@@ -146,6 +148,54 @@ def main():
         ave_train_loss = sum_train_loss / len(trainloader)
         return {"load_time": c2_load_time, "ave_train_loss": ave_train_loss}
 
+    def train_Q2(epoch):
+        """
+        Execute one epoch of training.
+        Args:
+
+            epoch (int): the current epoch
+        Returns:
+            c2_load_time (float): the time spent loading data
+        """
+        print("\nEpoch: %d" % epoch)
+        net.train()
+        train_loss = 0
+        correct = 0
+        total = 0
+
+        sum_train_loss = 0
+
+        c2_load_time = 0
+        c2_start = time.time()
+        for batch_idx, (inputs, targets) in enumerate(trainloader):
+            c2_load_time += time.time() - c2_start
+            inputs, targets = inputs.to(args.device), targets.to(args.device)
+            optimizer.zero_grad()
+            outputs = net(inputs)
+            loss = criterion(outputs, targets)
+            loss.backward()
+            optimizer.step()
+
+            train_loss += loss.item()
+            _, predicted = outputs.max(1)
+            total += targets.size(0)
+            correct += predicted.eq(targets).sum().item()
+
+            progress_bar(
+                batch_idx,
+                len(trainloader),
+                "Train Loss: %.3f | Acc: %.3f%% (%d/%d)"
+                % (
+                    train_loss / (batch_idx + 1),
+                    100.0 * correct / total,
+                    correct,
+                    total,
+                ),
+            )
+            sum_train_loss += train_loss
+            c2_start = time.time()
+        ave_train_loss = sum_train_loss / len(trainloader)
+        return {"load_time": c2_load_time, "ave_train_loss": ave_train_loss}
     def test(epoch):
         """
         Tests the model on the test set.
@@ -205,25 +255,27 @@ def main():
             torch.cuda.synchronize()  # wait for warm-up to finish
 
             start_time = time.time()
-            loss = train(epoch)["ave_train_loss"]
+            train_res = train(epoch)
             train_time = time.time()
             scheduler.step()
 
-            average_train_losses.append(loss)
+            average_train_losses.append(train_res["ave_train_loss"])
             train_times.append(train_time - start_time)
-            accuracy = test(epoch)["accuracy"]
-            accuracies.append(accuracy)
+            test_res = test(epoch)
+            accuracies.append(test_res["accuracy"])
 
             print(f"Epoch {epoch} ", file=outfile)
             print(f"    Train Time {train_time - start_time}\n", file=outfile)
-            print(f"    Accuracy {accuracy}\n", file=outfile)
+            print(f"    Accuracy {test_res['accuracy']}\n", file=outfile)
+            print(f"    Train Load Time {train_res['load_time']}\n", file=outfile)
+            print(f"    Test Load Time {test_res['load_time']}\n", file=outfile)
 
         print(
             f"#### Q1 Summary For Batch Size = {args.batch_size} ####\n\n",
             file=outfile,
         )
         print(f"Epoch 1:    Training Time (secs): {train_times[-1]}        Accuracy:{accuracies[-1]}     Average Train Loss:{average_train_losses[-1]} ", file=outfile)
-
+        print(f"Communication Time: {}")
         # table = PrettyTable([])
         # table.add_column("Epoch", [1,])
         # table.add_column("Training Time (secs)", )
