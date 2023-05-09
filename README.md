@@ -12,9 +12,19 @@ Create fresh VM with following requirements
 Install NVIDIA drivers (type `y`)
 
 Create virtual environment
+```
 $ python3 -m venv env
 $ source env/bin/activate
 $ git clone https://github.com/yaminivibha/DistributedDeepLearning-CIFAR10.git
 $ cd DistributedDeepLearning-CIFAR10
 $ bash setup.sh
+```
 
+## Running Experiments
+
+Execute code for testing across 1,2,4 GPUs in parallel with batch sizes ranging from 32 -> 8096.
+Benchmarks include computation time, GPU -> CPU communication time, and total runtime. 
+
+```
+$ bash execute.sh
+```
